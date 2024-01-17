@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Удалить объявление</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+</head>
+<body>
+    <div class="cre_back">
+        <h1>Удалить объявление</h1>
+        <form method="POST" action="{{ url_for('delete') }}">
+            <input class="text_name" type="text" name="id" placeholder="Введите id"><br>
+            <button class="button_agree" type="submit">Удалить</button>
+        </form>
+        <a href="{{ url_for('account') }}" class="exit_but">Назад</a>
+        <div class="errors">
+            {% for error in errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="present">
+        {% if desk %}
+            <ul class="desk_ed">
+                {% for i in desk %}
+                    <li class="index_ad_ed">
+                        <div class="ID_adv">ID объявления: {{ i.id }}</div>
+                        <p><img src="{{ i.photo }}" alt="{{ i.subject }}" width="200" height="200" class="img_v"></p>
+                        <div class="theme">{{ i.subject }}</div>
+                        <div class="main_text">{{ i.main_text }}</div>
+                        <div class="author">Автор: {{ i.author_name }}</div>
+                        {% if current_user.is_authenticated %}
+                            <div class="email">Почта: {{ i.email }}</div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+           <p>В данный момент нет объявлений</p>
+        {% endif %}
+    </div>
+</body>
+</html>

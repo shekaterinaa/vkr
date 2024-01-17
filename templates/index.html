@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная страница</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+</head>
+<body>
+    <div class="menu">
+        {% if current_user.is_authenticated %}
+        <div class="links">
+            <a class="profile_but_name">{{ current_user.username }}</a>
+            <img src="{{ prof.avatar }}" alt="{{ prof.name }}" width="50" height="50" class="img_a">
+            <a class="profile_but" href="{{ url_for('account') }}">Личный кабинет</a>
+            <a href="{{ url_for('logout') }}" class="profile_but">Выйти</a>
+        </div>
+        {% else %}
+        <div class="links">
+            <a href="{{ url_for('account') }}" class="profile_but">Личный кабинет</a>
+            <a href="{{ url_for('login') }}" class="profile_but">Войти</a>
+            <a href="{{ url_for('register') }}" class="profile_but">Регистрация</a>
+        </div>
+        <div class="message_main">
+            Для публикации нужно
+            <a href="{{ url_for('login') }}">авторизироваться</a>
+        </div>
+        {% endif %}
+        <div class="glav_str">Доска объявлений</div>
+        <div class="main_page">
+            {% if desk %}
+                <ul class="desk">
+                    {% for i in desk %}
+                        <li class="index_ad">
+                            <p><img src="{{ i.photo }}" alt="{{ i.subject }}" width="200" height="200" class="img_v"></p>
+                            <div class="theme">{{ i.subject }}</div>
+                            <div class="main_text">{{ i.main_text }}</div>
+                            <div class="author">Автор: {{ i.author_name }}</div>
+                            {% if current_user.is_authenticated %}
+                                <div class="email">Почта: {{ i.email }}</div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+               <p>В данный момент нет объявлений</p>
+            {% endif %}
+        </div>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('index', page=page-1) }}" class="link_left_s">Предыдущая страница</a>
+            {% endif %}
+        
+            {% if (page * per_page) < total_page %}
+                <a href="{{ url_for('index', page=page+1) }}" class="link_right_s">Следующая страница</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+<footer>
+    <div class="footer">
+        <div class="footer_1">
+            На сайте вы можете найти предложения частных лиц и компаний России 
+            о покупке или продаже товаров и услуг, а так же подать объявление 
+            бесплатно. Контактные данные для Роскомнадзора и государственных органов: juristdoska@iportal.ru
+        </div>
+        <div class="footer_2">
+            Учредитель: Общество с ограниченной ответственностью «ИНТЕРНЕТ 
+            ТЕХНОЛОГИИ» Адрес редакции: 
+            630099, Россия, Новосибирск, ул. Ленина, д. 12, 6 этаж Электронный адрес редакции: 
+            doska_adv@iportal.ru Техподдержка: helpdoska@iportal.ru, 8 (800) 200-03-83
+        </div>
+    </div>
+</footer>
+</html>

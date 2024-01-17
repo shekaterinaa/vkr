@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить новое объявление</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+</head>
+<body>
+    <div class="cre_back">
+        <h1>Добавить новое объявление</h1>
+        <form method="POST" action="{{ url_for('create') }}">
+            <input class="text_name" type="text" name="subject" placeholder="Тема" value="{{ subject_form }}">
+            <br>
+            <input class="text_name" type="text" name="main_text" placeholder="Описание" value="{{ main_text_form }}">
+            <br>
+            <input class="text_name" type="text" name="email" placeholder="email" value="{{ email_form }}">
+            <br>
+            <textarea class="text_name" name="photo" placeholder="Ссылка на фотографию" value="{{ photo_form }}"></textarea>
+            <br>
+            <button class="button_agree" type="submit">Добавить</button>
+        </form>
+
+        <a href="{{ url_for('account') }}" class="exit_but">Назад</a>
+        <div class="errors">
+            {% for error in errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

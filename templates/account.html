@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная страница</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+</head>
+<body>
+    <div class="menu">
+        <div class="links">
+            <a class="profile_but">{{ current_user.username }}</a>
+            <a href="{{ url_for('index') }}" class="profile_but">Главная страница</a>
+            <a href="{{ url_for('logout') }}" class="profile_but">Выйти</a>
+        </div>
+
+        <div class="card">
+            <div class="avatar_user">
+                <img src="{{ name_user.avatar }}" alt="{{ name_user.name }}" width="180" height="180" style="border-radius: 33px;">
+            </div>
+            <div class="name_user">
+                {{ name_user.name }}
+            </div>
+            <div class="about_user">
+                Информация о себе: {{ name_user.about }}
+            </div>
+        </div>
+
+        <div class="adv">
+            <div class="states">Список ваших статей:</div>
+            {% if adv %}
+            <ul>
+                {% for i in adv %}
+                    <li class="subject_ad">
+                        <h2>{{ i.subject }}</h2>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>У вас нет созданных объявлений!</p>
+            {% endif %}
+        </div>
+
+        <div class="buttons_account">
+            {% if current_user.username == 'katya' %}
+                <div class="ID_adv">
+                    Вы администратор!
+                </div>
+                <a href="{{ url_for('create') }}" class="profile_but_acc">Новое объявление</a>
+                <a href="{{ url_for('edit_adm') }}" class="profile_but_acc">Редактировать объявления</a>
+                <a href="{{ url_for('delete_adv') }}" class="profile_but_acc">Удалить объявление</a>
+                <a href="{{ url_for('edit_user') }}" class="profile_but_acc">Изменить пользователя</a>
+                <a href="{{ url_for('delete_user') }}" class="profile_but_acc">Удалить пользователя</a>
+            {% elif adv %}
+                <a href="{{ url_for('create') }}" class="profile_but_acc">Новое объявление</a>
+                <a href="{{ url_for('edit') }}" class="profile_but_acc">Редактировать объявление</a>
+                <a href="{{ url_for('delete') }}" class="profile_but_acc">Удалить объявление</a>
+            {% else %}
+                <p>У вас нет созданных объявлений!</p>
+                <a href="{{ url_for('create') }}" class="profile_but_acc">Новое объявление</a>
+            {% endif %}
+        </div>
+        <div class="account_str">
+            Личный кабинет
+        </div>
+    </div>
+</body>
+<footer>
+    <div class="footer">
+        <div class="footer_1">
+            На сайте вы можете найти предложения частных лиц и компаний России 
+            о покупке или продаже товаров и услуг, а так же подать объявление 
+            бесплатно. Контактные данные для Роскомнадзора и государственных органов: juristdoska@iportal.ru
+        </div>
+        <div class="footer_2">
+            Учредитель: Общество с ограниченной ответственностью «ИНТЕРНЕТ 
+            ТЕХНОЛОГИИ» Адрес редакции: 
+            630099, Россия, Новосибирск, ул. Ленина, д. 12, 6 этаж Электронный адрес редакции: 
+            doska_adv@iportal.ru Техподдержка: helpdoska@iportal.ru, 8 (800) 200-03-83
+        </div>
+    </div>
+</footer>
+</html>
