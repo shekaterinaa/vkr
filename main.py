@@ -24,10 +24,10 @@ CORS(app)
 # Получаем настройки из переменных окружения
 app.secret_key = os.getenv('SECRET_KEY', '123')  # Значение по умолчанию '123'
 user_db = os.getenv('DB_USER', 'katya')
-host_ip = os.getenv('DB_HOST', 'dpg-d0n1qi2li9vc7380hp80-a')
+host_ip = os.getenv('DB_HOST', '127.0.0.1')
 host_port = os.getenv('DB_PORT', '5432')
 database_name = os.getenv('DB_NAME', 'katya_rgz')
-password = os.getenv('DB_PASSWORD', 'TaQ6LyXFU3iAYjC6LjZMq4YVzmvupjyu')
+password = os.getenv('DB_PASSWORD', '123')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')  # Используем переменную окружения
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
