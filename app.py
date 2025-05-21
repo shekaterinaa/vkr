@@ -23,8 +23,8 @@ CORS(app)
 # Получаем настройки из переменных окружения
 app.secret_key = os.getenv('SECRET_KEY', '123')  # Значение по умолчанию '123'
 user_db = os.getenv('DB_USER', 'katya')
-host_ip = os.getenv('DB_HOST', '0.0.0.0')
-host_port = os.getenv('DB_PORT', '10000')
+host_ip = os.getenv('DB_HOST', '127.0.0.1')
+host_port = os.getenv('DB_PORT', '5432')
 database_name = os.getenv('DB_NAME', 'katya_rgz')
 password = os.getenv('DB_PASSWORD', '123')
 
