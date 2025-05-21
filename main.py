@@ -14,8 +14,6 @@ import base64
 import os
 from dotenv import load_dotenv
 
-from flask_migrate import Migrate
-migrate = Migrate(app, db)
 
 # Загружаем переменные окружения из .env файла
 load_dotenv()
