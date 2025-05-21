@@ -1,4 +1,4 @@
-import app  # Импорт приложения из app.py
+from app import app  # Или другое имя вашего основного файла
 
 if __name__ == "__main__":
     app.run()
