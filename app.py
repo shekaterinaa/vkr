@@ -11,15 +11,22 @@ from flask_cors import CORS
 import base64
 
 
+import os
+from dotenv import load_dotenv
+
+# Загружаем переменные окружения из .env файла
+load_dotenv()
+
 app = Flask(__name__)
 CORS(app)
 
-app.secret_key = "123"
-user_db = "katya"
-host_ip = "127.0.0.1"
-host_port = "5432"
-database_name = "katya_rgz"
-password = "123"
+# Получаем настройки из переменных окружения
+app.secret_key = os.getenv('SECRET_KEY', '123')  # Значение по умолчанию '123'
+user_db = os.getenv('DB_USER', 'katya')
+host_ip = os.getenv('DB_HOST', '127.0.0.1')
+host_port = os.getenv('DB_PORT', '5432')
+database_name = os.getenv('DB_NAME', 'katya_rgz')
+password = os.getenv('DB_PASSWORD', '123')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user_db}:{password}@{host_ip}:{host_port}/{database_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
