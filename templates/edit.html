@@ -1,46 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактировать объявление</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #070000;
+        }
+        .edit_back {
+            background: #333 ;
+            padding: 40px 30px;
+            color: white;
+            border-radius: 10px;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .button_agree {
+            width: 100%;
+            background: white;
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+            color: black;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .button_agree:hover {
+            background: grey;
+        }
+        .exit_but {
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .exit_but:hover {
+            text-decoration: underline;
+        }
+        .errors {
+            color: red;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="edit_back">
         <h1>Редактировать объявление</h1>
-        <form method="POST" action="{{ url_for('edit') }}">
-            <input class="text_name" type="text" name="id" placeholder="Введите id" value="{{ id_form }}"><br>
-            <input class="text_name" type="text" name="subject" placeholder="Тема" value="{{ subject_form }}"><br>
-            <textarea class="text_name" name="main_text" placeholder="Описание" value="{{ main_text_form }}"></textarea><br>
-            <input class="text_name" type="text" name="email" placeholder="email" value="{{ email_form }}"><br>
-            <input class="text_name" type="text" name="photo" placeholder="Фотография" value="{{ photo_form }}"><br>
+        <form method="POST" action="{{ url_for('edit') }}" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{ desk[0].id }}">  <!-- передаете id -->
+            <input class="form-control" type="text" name="subject" placeholder="Тема" value="{{ desk[0].subject }}" required><br>
+            <textarea class="form-control" name="main_text" placeholder="Описание" required>{{ desk[0].main_text }}</textarea><br>
+            <input class="form-control" type="url" name="link" placeholder="Ссылка на соц. сеть" value="{{ link_form }}" required><br>
+            <label for="photo">Загрузите новое изображение:</label>
+            <input class="form-control" type="file" name="photo" accept="image/*"><br>
+            <label for="cooperation">Условия сотрудничества:</label>
+            <div>
+                <label>
+                    <input type="radio" name="cooperation_condition" value="tfp" {% if desk[0].cooperation_condition == 'tfp' %}checked{% endif %}> TFP
+                </label>
+                <label>
+                    <input type="radio" name="cooperation_condition" value="commercial" {% if desk[0].cooperation_condition == 'commercial' %}checked{% endif %}> Коммерция
+                </label>
+            </div>
+            <div id="commercial-fields" style="display: {{ 'block' if desk[0].cooperation_condition == 'commercial' else 'none' }};">
+                <input class="form-control" type="text" name="price" placeholder="Стоимость в час или предложение по бартеру" value="{{ desk[0].price }}">
+            </div>
+            
             <button class="button_agree" type="submit">Сохранить</button>
+        </form>
         </form>
         <a href="{{ url_for('account') }}" class="exit_but">Назад</a>
         <div class="errors">
             {% for error in errors %}
-                {{ error }}
+                <p>{{ error }}</p>
             {% endfor %}
         </div>
     </div>
-    <div class="present">
-        {% if desk %}
-            <ul class="desk_ed">
-                {% for i in desk %}
-                    <li class="index_ad_ed">
-                        <div class="ID_adv">ID объявления: {{ i.id }}</div>
-                        <p><img src="{{ i.photo }}" alt="{{ i.subject }}" width="200" height="200" class="img_v"></p>
-                        <div class="theme">{{ i.subject }}</div>
-                        <div class="main_text">{{ i.main_text }}</div>
-                        <div class="author">Автор: {{ i.author_name }}</div>
-                        {% if current_user.is_authenticated %}
-                            <div class="email">Почта: {{ i.email }}</div>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-           <p>В данный момент нет объявлений</p>
-        {% endif %}
-    </div>
+    <script>
+        function toggleCommercialFields() {
+            var condition = document.querySelector('input[name="cooperation_condition"]:checked').value;
+            var commercialFields = document.getElementById('commercial-fields');
+            if (condition === 'commercial') {
+                commercialFields.style.display = 'block';
+            } else {
+                commercialFields.style.display = 'none';
+            }
+        }
+
+        // Инициализация поля на основе предустановленного значения
+        toggleCommercialFields();
+    </script>
 </body>
 </html>

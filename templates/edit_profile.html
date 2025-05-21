@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать профиль</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #070000;
+        }
+        .edit_back {
+            background: #333;
+            padding: 40px 30px;
+            color: white;
+            border-radius: 10px;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .button_agree {
+            width: 100%;
+            background: white;
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+            color: black;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .button_agree:hover {
+            background: grey;
+        }
+        .exit_but {
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .exit_but:hover {
+            text-decoration: underline;
+        }
+        .errors {
+            color: red;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit_back">
+        <h1>Редактировать профиль</h1>
+        <form method="POST" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{ user.id }}"> <!-- передаете id пользователя -->
+            <input class="form-control" type="text" name="name" placeholder="Имя" value="{{ user.name }}" required><br>
+            <input class="form-control" type="text" name="contact" placeholder="Контактный телефон" value="{{ user.contact }}" required><br>
+            <input class="form-control" id="avatar" type="file" name="avatar"><br>
+            <textarea class="form-control" name="about" placeholder="О себе" required>{{ user.about }}</textarea><br>
+            <input class="form-control" type="url" name="social" placeholder="Ссылка на соц. сеть" value="{{ user.social }}" required><br>
+            <button class="button_agree" type="submit">Сохранить</button>
+        </form>
+        <div class="errors">
+            {% for error in errors %}
+                <p style="color: red;">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <a href="{{ url_for('account') }}" class="exit_but">Назад</a>
+    </div>
+</body>
+</html>
+

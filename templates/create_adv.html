@@ -1,30 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавить новое объявление</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            display: flex; /* Flexbox для всего body */
+            justify-content: center; /* Центрирование по горизонтали */
+            align-items: center; /* Центрирование по вертикали */
+            height: 100vh; /* Высота на весь экран */
+            margin: 0; /* Убираем отступы */
+            background-color: #070000; /* Цвет фона для контраста */
+        }
+
+        .cre_back {
+            background: #333;
+            padding: 40px 30px; /* Чуть меньше отступы для компактности */
+            color: white;
+            border-radius: 10px; /* Скутгление углов */
+            width: 500px; /* Уменьшенная ширина */
+            display: flex; /* Flexbox */
+            flex-direction: column; /* Ориентация по вертикали */
+            justify-content: center; /* Центрирование по вертикали */
+        }
+
+        h1 {
+            margin-bottom: 30px; /* Отступ снизу для заголовка */
+            text-align: center; /* Центрирование текста */
+        }
+
+        .button_agree {
+            width: 100%;
+            background: white;
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+            color: black;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .button_agree:hover {
+            background: grey;
+        }
+
+        .exit_but {
+            color: whitesmoke;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .exit_but:hover {
+            text-decoration: underline;
+        }
+
+        .errors {
+            color: red;
+            margin: 10px 0; /* Отступ для ошибок */
+            text-align: center; /* Центрирование текста ошибок */
+        }
+    </style>
+    <script>
+        function toggleCommercialFields() {
+            var condition = document.querySelector('input[name="cooperation_condition"]:checked').value;
+            var commercialFields = document.getElementById('commercial-fields');
+            if (condition === 'commercial') {
+                commercialFields.style.display = 'block';
+            } else {
+                commercialFields.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="cre_back">
         <h1>Добавить новое объявление</h1>
-        <form method="POST" action="{{ url_for('create') }}">
-            <input class="text_name" type="text" name="subject" placeholder="Тема" value="{{ subject_form }}">
+        <form method="POST" action="{{ url_for('create') }}" enctype="multipart/form-data"> <!-- Важно: используем enctype для загрузки файлов -->
+            <label for="subject"> Тема объявления</label>
+            <input class="form-control" type="text" name="subject" placeholder="Тема" value="{{ subject_form }}" required>
             <br>
-            <input class="text_name" type="text" name="main_text" placeholder="Описание" value="{{ main_text_form }}">
+            <label for="main_text"> Опишите кратко требования по съемке (цель, место проведения)</label>
+            <input class="form-control" type="text" name="main_text" placeholder="Описание" value="{{ main_text_form }}" required>
             <br>
-            <input class="text_name" type="text" name="email" placeholder="email" value="{{ email_form }}">
+            <label for="social_link">Ваша ссылка на Telegram, Vk для связи по объявлению</label>
+            <input class="form-control" type="url" name="link" placeholder="Ссылка на соц. сеть" value="{{ link_form }}" required>
             <br>
-            <textarea class="text_name" name="photo" placeholder="Ссылка на фотографию" value="{{ photo_form }}"></textarea>
+            <label for="photo">Загрузите референсы съемки(по желанию):</label>
+            <input class="form-control" type="file" name="photo" accept="image/*" multiple required> <!-- добавили 'multiple' -->
             <br>
+
+            <label for="cooperation">Условия сотрудничества:</label>
+            <div>
+                <label>
+                    <input type="radio" name="cooperation_condition" value="tfp" checked onclick="toggleCommercialFields()"> TFP
+                </label>
+                <label>
+                    <input type="radio" name="cooperation_condition" value="commercial" onclick="toggleCommercialFields()"> Коммерция
+                </label>
+            </div>
+            <div id="commercial-fields" style="display: none;">
+                <input class="form-control" type="text" name="price" placeholder="Стоимость в час или предложение по бартеру">
+                <br>
+            </div>
+
             <button class="button_agree" type="submit">Добавить</button>
         </form>
 
-        <a href="{{ url_for('account') }}" class="exit_but">Назад</a>
         <div class="errors">
             {% for error in errors %}
-                {{ error }}
+                <p>{{ error }}</p>
             {% endfor %}
         </div>
+
+        <a href="{{ url_for('account') }}" class="exit_but">Назад</a>
     </div>
 </body>
 </html>
+

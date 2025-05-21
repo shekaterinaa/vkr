@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила публикации объявления</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Темный фон */
+            color: #f0f0f0; /* Светлый текст */
+            margin: 0;
+            padding: 20px;
+        }
+        .rules {
+            background-color: #333; /* Темно-серый фон для блока */
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .links {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .back_button {
+            background: #555;
+            color: #f0f0f0;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="rules">
+    <h2>Правила публикации объявления</h2>
+    <h3>Что нужно указывать в объявлении:</h3>
+    <ul>
+        <li>Четкое название объявления.</li>
+        <li>Подробное описание вашего объявления.</li>
+        <li>Действительная контактная информация для связи(Telegram, VK или другой любой мессенджер)</li>
+        <li>Фотографии, соответствующие объявлению.</li>
+    </ul>
+
+    <h3>Какие объявления можно публиковать:</h3>
+    <ul>
+        <li>Запросы на фотографии или другие творческие мероприятия (съемки клипов, показов).</li>
+        <li>Объявления о сотрудничестве(tfp,коммерция,бартер).</li>
+        <li>Запросы по поиску специалиста.</li>
+        <li>Сообщения о кастингах и моделях.</li>
+    </ul>
+
+    <h3>Какие объявления нельзя публиковать:</h3>
+    <ul>
+        <li>Объявления с ненадлежащим содержанием.</li>
+        <li>Реклама запрещенных товаров или услуг.</li>
+        <li>Спам или дублирование объявлений.</li>
+    </ul>
+    <h3>В случае несоблюдения правил объявление удаляется администратором</h3>
+
+    <a href="{{ url_for('account') }}" class="back_button">Назад в личный кабинет</a>
+</div>
+
+</body>
+</html>

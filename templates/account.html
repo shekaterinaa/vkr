@@ -1,36 +1,227 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Главная страница</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Темный фон */
+            color: #f0f0f0; /* Светлый текст */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .menu {
+            background: #333; /* Темно-серый цвет */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .links {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .profile_but {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #f0f0f0; /* Цвет ссылки */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column; /* Изменено на вертикальную компоновку */
+            margin-bottom: 20px;
+            border: 1px solid #444; /* Темная обводка */
+            border-radius: 8px;
+            padding: 15px;
+            background: #070101; /* Фон карточки */
+            position: relative;
+        }
+
+        .avatar_user {
+            margin-right: 20px;
+        }
+
+        .avatar_user img {
+            border-radius: 10%;
+            max-width: 100px;
+            height: auto;
+        }
+
+        .about_user {
+            max-width: 500px;
+        }
+
+        .buttons_account {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Изменено на выравнивание по левому краю */
+        }
+
+        .profile_but_acc {
+            background: #555; /* Темно-серый фон для кнопок */
+            color: white; /* Цвет текста кнопок */
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 5px 0;
+            text-decoration: none;
+            text-align: center;
+            width: auto; /* Автоматическая ширина */
+            min-width: 150px; /* Минимальная ширина кнопок */
+        }
+
+        .profile_but_acc:hover {
+            background: #777; /* Более светлый серый при наведении */
+        }
+
+        .edit_profile_button {
+            margin-top: auto; /* Сжимает пространство, чтобы кнопка была внизу карточки */
+            align-self: flex-end; /* Выравнивание кнопки по правому краю */
+        }
+
+        .upload_portfolio {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .portfolio_images {
+            display: flex;
+            flex-wrap: wrap; /* Позволяет изображениям оборачивать в следующую строку при необходимости */
+            margin: 0; /* Убираем отступы у контейнера */
+        }
+
+        .portfolio_image {
+            max-width: 250px; /* Устанавливаем максимальную ширину изображения */
+            height: auto; /* Высота будет автоматически изменяться по отношению к ширине */
+            border-radius: 8px; /* Закругляем края изображения */
+        }
+
+        .adv {
+            margin-top: 20px;
+        }
+
+        .subject_ad {
+            background: #333; /* Темно-серый фон для объявления */
+            border-radius: 8px;
+            margin: 10px 0;
+            padding: 15px;
+        }
+
+        .subject_ad h2 {
+            color: #f0f0f0; /* Цвет заголовка объявления */
+        }
+
+        /* Footer стили */
+        footer {
+            display: none; /* По умолчанию скрыт */
+            position: fixed; /* Чтобы оставаться внизу страницы */
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+    <script>
+        // Показать футер при прокрутке в низ
+        window.onscroll = function() {
+            var footer = document.querySelector('footer');
+            if (document.documentElement.scrollHeight <= window.innerHeight + window.scrollY) {
+                footer.style.display = 'block';
+            } else {
+                footer.style.display = 'none';
+            }
+        };
+    </script>
 </head>
 <body>
+
     <div class="menu">
         <div class="links">
-            <a class="profile_but">{{ current_user.username }}</a>
             <a href="{{ url_for('index') }}" class="profile_but">Главная страница</a>
             <a href="{{ url_for('logout') }}" class="profile_but">Выйти</a>
+            {% if current_user.username == 'shekaterina' %}
+                <a href="{{ url_for('journal_applications') }}" class="profile_but">Заявки на журнал</a>
+            {% endif %}
         </div>
-
+    
         <div class="card">
             <div class="avatar_user">
-                <img src="{{ name_user.avatar }}" alt="{{ name_user.name }}" width="180" height="180" style="border-radius: 33px;">
-            </div>
-            <div class="name_user">
-                {{ name_user.name }}
+                <img src="data:image/png;base64,{{ avatar }}" alt="{{ name_user.name }}" class="img_a">
             </div>
             <div class="about_user">
-                Информация о себе: {{ name_user.about }}
+                <h3>{{ name_user.name }} {{ name_user.surname }}</h3>
+                <p style="text-align: justify;"><strong>О себе:</strong> {{ name_user.about }}</p>
+                <p><strong>Телефон:</strong> {{ name_user.contact }}</p>
+                <p><strong>Социальная сеть:</strong> <a href="{{ name_user.social }}" style="color: #f0f0f0;">{{ name_user.social }}</a></p>
+            </div>
+            <div class="edit_profile_button">
+                <a href="{{ url_for('edit_profile') }}" class="profile_but_acc">Редактировать профиль</a>
             </div>
         </div>
-
+    
+        {% if current_user.username == 'shekaterina' %}
+        <div class="buttons_account">
+            <h4>Управление пользователем и объявлениями</h4>
+            <a href="{{ url_for('delete_user') }}" class="profile_but_acc">Удалить пользователя</a>
+            <a href="{{ url_for('delete') }}" class="profile_but_acc">Удалить пользовательское объявление</a>
+        </div>
+        {% else %}
+        <div class="buttons_account">
+            <h4>Управление объявлениями</h4>
+            <a href="{{ url_for('create') }}" class="profile_but_acc">Создать объявление</a>
+            <a href="{{ url_for('rules') }}" class="profile_but_acc">Ознакомиться с правилами публикации объявления</a>
+        </div>
+        {% endif %}
+    
+        <div class="upload_portfolio">
+            <h3>Загрузить фотографии в портфолио</h3>
+            <form action="{{ url_for('upload_portfolio') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="portfolio_images" multiple required />
+                <button type="submit" style="background: #555; color: white; border: none; border-radius: 25px; padding: 10px 20px;">Загрузить</button>
+            </form>
+        </div>
+    
+        <div class="user_portfolio">
+            <h3>Ваше портфолио</h3>
+            <div class="portfolio_images">
+                {% for img in current_user.portfolios %}
+                    <div class="portfolio_item">
+                        <img src="data:image/png;base64,{{ img.img | b64encode }}" alt="{{ img.name }}" class="portfolio_image" />
+                        <form action="{{ url_for('delete_portfolio', image_id=img.id) }}" method="post">
+                            <button type="submit" class="profile_but_acc" style="background: grey;">Удалить</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+    
         <div class="adv">
-            <div class="states">Список ваших статей:</div>
+            <h3>Список ваших объявлений:</h3>
             {% if adv %}
             <ul>
                 {% for i in adv %}
                     <li class="subject_ad">
                         <h2>{{ i.subject }}</h2>
+                        {% for photo in i.photos %}
+                            <img src="data:image/png;base64,{{ photo.img | b64encode }}" alt="Изображение объявления" width="300" height= "auto" style="border-radius: 8px;">
+                        {% endfor %}
+                        <p>{{ i.main_text }}</p>
+                        <div class="adv_actions">
+                            <a href="{{ url_for('edit', adv_id=i.id) }}" class="profile_but_acc">Редактировать</a>
+                            <a href="{{ url_for('delete_adv', adv_id=i.id) }}" class="profile_but_acc">Удалить</a>
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -38,44 +229,16 @@
                 <p>У вас нет созданных объявлений!</p>
             {% endif %}
         </div>
-
-        <div class="buttons_account">
-            {% if current_user.username == 'katya' %}
-                <div class="ID_adv">
-                    Вы администратор!
-                </div>
-                <a href="{{ url_for('create') }}" class="profile_but_acc">Новое объявление</a>
-                <a href="{{ url_for('edit_adm') }}" class="profile_but_acc">Редактировать объявления</a>
-                <a href="{{ url_for('delete_adv') }}" class="profile_but_acc">Удалить объявление</a>
-                <a href="{{ url_for('edit_user') }}" class="profile_but_acc">Изменить пользователя</a>
-                <a href="{{ url_for('delete_user') }}" class="profile_but_acc">Удалить пользователя</a>
-            {% elif adv %}
-                <a href="{{ url_for('create') }}" class="profile_but_acc">Новое объявление</a>
-                <a href="{{ url_for('edit') }}" class="profile_but_acc">Редактировать объявление</a>
-                <a href="{{ url_for('delete') }}" class="profile_but_acc">Удалить объявление</a>
-            {% else %}
-                <p>У вас нет созданных объявлений!</p>
-                <a href="{{ url_for('create') }}" class="profile_but_acc">Новое объявление</a>
-            {% endif %}
-        </div>
-        <div class="account_str">
-            Личный кабинет
-        </div>
     </div>
+    </div>
+    <footer>
+        <div class="footer">
+            <p>&copy; 2025 Art Voir. Все права защищены.</p>
+        </div>
+    </footer>
 </body>
-<footer>
-    <div class="footer">
-        <div class="footer_1">
-            На сайте вы можете найти предложения частных лиц и компаний России 
-            о покупке или продаже товаров и услуг, а так же подать объявление 
-            бесплатно. Контактные данные для Роскомнадзора и государственных органов: juristdoska@iportal.ru
-        </div>
-        <div class="footer_2">
-            Учредитель: Общество с ограниченной ответственностью «ИНТЕРНЕТ 
-            ТЕХНОЛОГИИ» Адрес редакции: 
-            630099, Россия, Новосибирск, ул. Ленина, д. 12, 6 этаж Электронный адрес редакции: 
-            doska_adv@iportal.ru Техподдержка: helpdoska@iportal.ru, 8 (800) 200-03-83
-        </div>
-    </div>
-</footer>
 </html>
+
+
+
+

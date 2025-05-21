@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль специалиста {{ specialist.name }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Темный фон */
+            color: #f0f0f0; /* Светлый текст */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between; /* Выравнивание элементов в стороны */
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333; /* Фон для верхнего меню */
+        }
+        
+        .logo {
+            color: white; /* Цвет текста логотипа */
+            font-size: 24px; /* Размер шрифта логотипа */
+        }
+
+        .links {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .profile_but {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #f0f0f0; /* Цвет ссылки */
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid #444; /* Темная обводка */
+            border-radius: 8px;
+            padding: 15px;
+            background: #070101; /* Фон карточки */
+        }
+
+        .avatar_user {
+            margin-right: 20px;
+        }
+
+        .avatar_user img {
+            border-radius: 10%;
+            max-width: 100px;
+            height: auto;
+        }
+
+        .about_user {
+            max-width: 500px;
+        }
+
+        .portfolio_images {
+            display: flex;
+            flex-wrap: wrap; /* Позволяет изображениям оборачивать в следующую строку при необходимости */
+            margin: 0; /* Убираем отступы у контейнера */
+        }
+
+        .portfolio_image {
+            max-width: 250px; /* Устанавливаем максимальную ширину изображения */
+            height: auto; /* Высота будет автоматически изменяться по отношению к ширине */
+            border-radius: 8px; /* Закругляем края изображения */
+            margin: 5px; /* Отступы между изображениями */
+        }
+
+        .back_link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #f0f0f0; /* Цвет ссылки */
+            text-decoration: none;
+            padding: 10px 20px;
+            background: #555; /* Темно-серый фон для кнопки */
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .back_link:hover {
+            background: #777; /* Более светлый серый при наведении */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">ART Voir</div>
+        <nav class="links">  <!-- Используйте <nav> для навигационных ссылок -->
+            <a href="{{ url_for('index') }}" class="profile_but">Главная страница</a>
+            <a href="{{ url_for('logout') }}" class="profile_but">Выйти</a>
+        </nav>
+    </header>
+</body>
+
+    <div class="card">
+        <div class="avatar_user">
+            {% if avatar %}
+                <img src="data:image/png;base64,{{ avatar }}" alt="Аватар {{ specialist.name }}" class="img_a">
+            {% endif %}
+        </div>
+        <div class="about_user">
+            <h1>{{ specialist.name }}</h1>
+            <p style="text-align: justify;"><strong>О себе:</strong> {{ specialist.about }}</p>
+            <p style="text-align: justify;"><strong>Контакты:</strong> {{ specialist.contact }}</p>
+            <p><strong>Связаться со мной:</strong> <a href="{{ specialist.social }}" target="_blank" style="color: #f0f0f0; text-decoration: underline;">{{ specialist.social }}</a></p>
+        </div>
+    </div>
+
+    <h2>Портфолио специалиста</h2>
+    <div class="portfolio_images">
+        {% for img in portfolio_images %}
+            <img src="data:image/png;base64,{{ img.img | b64encode }}" alt="Изображение портфолио" class="portfolio_image">
+        {% endfor %}
+    </div>
+
+    <a href="{{ url_for('index') }}" class="back_link">Назад к поиску</a>
+
+    <footer>
+        <p>&copy; 2025 Art Voir. Все права защищены.</p>
+    </footer>
+    
+</body>
+</html>
+

@@ -1,73 +1,483 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <title>Главная страница</title>
-    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between; /* Выравнивание элементов в стороны */
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333; /* Фон для верхнего меню */
+        }
+
+        .logo {
+            color: white; /* Цвет текста логотипа */
+            font-size: 24px; /* Размер шрифта логотипа */
+        }
+
+        .links {
+            display: flex;
+            align-items: center;
+        }
+
+        .links a {
+            color: white; /* Цвет текста */
+            text-decoration: none; /* Убираем подчеркивание */
+            margin-left: 15px; /* Отступ между ссылками */
+            transition: all 0.3s; /* Плавный переход при наведении */
+        }
+
+        .links a:hover {
+            color: white; /* Цвет текста при наведении */
+            background-color: black; /* Фоновый цвет при наведении */
+            border-radius: 5px; /* Закругление углов фона */
+            padding: 5px; /* Отступ вокруг текста */
+        }
+
+        .img_a {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: 10px; /* Отступ между ссылками и аватаркой */
+        }
+
+        .sections {
+            text-align: center; /* Центрируем секции */
+            margin-top: 20px;
+        }
+
+        .content-section {
+            display: none; /* Скрываем все разделы по умолчанию */
+        }
+
+        .link-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            text-decoration: none;
+            background-color: white;
+            color: black;
+            border-radius: 25px;
+        }
+
+         /* Footer стили */
+         footer {
+            display: none; /* По умолчанию скрыт */
+            position: fixed; /* Чтобы оставаться внизу страницы */
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .ad-images {
+            display: flex; /* Используем flexbox для сетки изображений */
+            flex-wrap: wrap; /* Позволяем оборачивать изображения */
+            gap: 10px; /* Отступы между изображениями */
+        
+        }
+        .ad-image {
+            max-width: 150px; /* Ограничиваем ширину изображения */
+            width: 100%; /* Ширина изображения 100% от контейнера */
+            height: auto; /* Высота автоматически подстраивается */
+            border-radius: 5px; /* Сглаживаем углы */
+        }
+
+        .user-panel h3 a {
+            color: white; /* Цвет ссылки */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+
+        .user-panel h3 a:hover {
+            text-decoration: underline; /* Подчеркивание при наведении */
+        }
+
+        .ad-panel {
+            background-color: #333; /* Цвет фона для объявления (темно-серый) */
+            color: white; /* Цвет текста белый */
+            border-radius: 8px; /* Закругление углов */
+            padding: 15px; /* Внутренний отступ */
+            margin: 10px 0; /* Отступы сверху и снизу, левый и правый отступы равны 0 */
+            width: 50%; /* Ширина блока 50% от ширины экрана */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+        }
+
+/* Стили для ссылок внутри блока .ad-panel */
+        .ad-panel a {
+            color: black; /* Цвет ссылок черный */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+
+        .ad-panel a:hover {
+            text-decoration: underline; /* Подчеркивание при наведении */
+        }
+
+        .contact-link-container {
+            text-align: right; /* Выровнять содержимое вправо */
+            margin-top: 20px; /* Отступ сверху */
+        }
+
+        .contact-link {
+            display: inline-block; /* Отображение как блок для кнопки */
+            padding: 10px 20px; /* Отступы для кнопки */
+            background-color: white; /* Фоновый цвет кнопки */
+            color: black; /* Цвет текста кнопки */
+            border-radius: 5px; /* Закругление углов */
+            text-decoration: none; /* Убираем подчеркивание */
+            transition: background-color 0.3s; /* Плавный переход фона при наведении */
+        }
+
+        .contact-link:hover {
+            background-color: #ddd; /* Цвет фона при наведении */
+        }
+
+        .reg_back {
+        background: #333;
+        padding: 40px 50px;
+        color: white;
+        border-radius: 10px; /* Добавим немного скругления */
+        margin-top: 20px; /* Отступ сверху для визуального разделения */
+        text-align: center; /* Центрируем текст внутри блока */
+    }
+
+    h2 {
+        text-align: center; /* Центрируем заголовок */
+        margin-bottom: 20px; /* Отступ снизу для заголовка */
+        color: white; /* Цвет заголовка */
+    }
+
+    .button_agree {
+        width: 100%;
+        background: white;
+        padding: 10px;
+        border: none;
+        font-size: 14px;
+        color: black;
+        border-radius: 20px;
+        text-transform: uppercase;
+        margin-top: 20px; /* Отступ сверху для кнопки */
+    }
+
+    .button_agree:hover {
+        background: black;
+    }
+
+    .form-group label {
+        margin-bottom: 10px; /* Отступ снизу для меток */
+        display: block; /* Устанавливаем блок, чтобы отступ работал */
+    }
+
+    .form-control {
+        width: 100%; /* Поля ввода занимают всю ширину родительского контейнера */
+        margin-top: 10px; /* Отступ сверху для разделения с меткой */
+    }
+
+    .modal {
+            display: none;
+            position: absolute;
+            top: 0; /* будет под формой */
+            right: 0;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .modal-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            margin-top: 10px;
+        }
+
+    </style>
+    <script>
+        function showSection(sectionId) {
+            // Скрываем все секции
+            var sections = document.getElementsByClassName('content-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].style.display = 'none';
+            }
+            // Показываем выбранную секцию
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
 </head>
 <body>
-    <div class="menu">
-        {% if current_user.is_authenticated %}
+    <header class="header">
+        <div class="logo">ART Voir</div>
         <div class="links">
-            <a class="profile_but_name">{{ current_user.username }}</a>
-            <img src="{{ prof.avatar }}" alt="{{ prof.name }}" width="50" height="50" class="img_a">
-            <a class="profile_but" href="{{ url_for('account') }}">Личный кабинет</a>
-            <a href="{{ url_for('logout') }}" class="profile_but">Выйти</a>
-        </div>
-        {% else %}
-        <div class="links">
-            <a href="{{ url_for('account') }}" class="profile_but">Личный кабинет</a>
-            <a href="{{ url_for('login') }}" class="profile_but">Войти</a>
-            <a href="{{ url_for('register') }}" class="profile_but">Регистрация</a>
-        </div>
-        <div class="message_main">
-            Для публикации нужно
-            <a href="{{ url_for('login') }}">авторизироваться</a>
-        </div>
-        {% endif %}
-        <div class="glav_str">Доска объявлений</div>
-        <div class="main_page">
-            {% if desk %}
-                <ul class="desk">
-                    {% for i in desk %}
-                        <li class="index_ad">
-                            <p><img src="{{ i.photo }}" alt="{{ i.subject }}" width="200" height="200" class="img_v"></p>
-                            <div class="theme">{{ i.subject }}</div>
-                            <div class="main_text">{{ i.main_text }}</div>
-                            <div class="author">Автор: {{ i.author_name }}</div>
-                            {% if current_user.is_authenticated %}
-                                <div class="email">Почта: {{ i.email }}</div>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('account') }}">Личный кабинет</a>
+                <a href="{{ url_for('home_page') }}">Выйти</a>
+                {% if avatar %}
+                <img src="data:image/png;base64,{{ avatar }}" alt="Ваш аватар" class="img_a">
+                {% endif %}
             {% else %}
-               <p>В данный момент нет объявлений</p>
+                <a href="{{ url_for('account') }}">Личный кабинет</a>
+                <a href="{{ url_for('login') }}">Войти</a>
+                <a href="{{ url_for('register') }}">Регистрация</a>
             {% endif %}
         </div>
-        <div class="pagination">
-            {% if page > 1 %}
-                <a href="{{ url_for('index', page=page-1) }}" class="link_left_s">Предыдущая страница</a>
-            {% endif %}
+    </header>
+    
+
+    <main>
+        <div class="sections">
+            <a href="javascript:void(0);" onclick="showSection('search-section')" class="link-button">Специалисты</a>
+            <a href="javascript:void(0);" onclick="showSection('collaboration-section')" class="link-button">Сотрудничество</a>
+            <a href="javascript:void(0);" onclick="showSection('journal-section')" class="link-button">Попасть в журнал</a>
+        </div>
+
+        <!-- Контент для поиска специалистов -->
+<div id="search-section" class="content-section">
+    <h2>Поиск специалистов</h2>
+    <form id="specialization-form">
+        <label for="specialization">Выберите категорию:</label>
+        <select id="specialization" name="specialization">
+            <option value="">-- Выберите --</option>
+            <option value="model">Модель</option>
+            <option value="photographer">Фотограф</option>
+            <option value="makeup-artist">Визажист</option>
+            <option value="designer">Дизайнер</option>
+            <option value="videographer">Видеограф</option>
+        </select>
+        <button type="button" class="link-button" onclick="fetchUsers()">Поиск</button>
+    </form>
+    
+    <div id="user-panels" style="margin-top: 20px;"></div>
+</div>
+
+<script>
+    function fetchUsers() {
+    const specialization = document.getElementById('specialization').value;
+    if (specialization) {
+        fetch(`/api/users/${specialization}`)
+            .then(response => response.json())
+            .then(users => {
+                console.log(users); // Проверка данных
+                displayUsers(users);
+            });
+    }
+}
+
+    function displayUsers(users) {
+    const userPanels = document.getElementById('user-panels');
+    userPanels.innerHTML = ''; // Очистить предыдущие панели
+    users.forEach(user => {
+        const userPanel = document.createElement('div');
+        userPanel.className = 'user-panel';
+
+        // Теперь используем user.avatar непосредственно
+        userPanel.innerHTML = `
+            <h3><a href="/account/${user.id}">${user.name}</a></h3>
+            <div class="portfolio_images">
+                ${user.portfolio.map(img => `<img src="data:image/png;base64,${img.image}" alt="${user.name} портфолио" class="portfolio_image">`).join('')}
+            </div>
+        `;
         
-            {% if (page * per_page) < total_page %}
-                <a href="{{ url_for('index', page=page+1) }}" class="link_right_s">Следующая страница</a>
-            {% endif %}
+        userPanels.appendChild(userPanel);
+    });
+}
+
+
+
+    function viewPortfolio(userId) {
+        // Здесь вы можете перенаправить пользователя на страницу портфолио
+        window.location.href = `/portfolio/${userId}`;
+    }
+</script>
+
+<!-- Контент для сотрудничества -->
+<div id="collaboration-section" class="content-section">
+   
+    <label>Выберите вид сотрудничества:</label>
+    <label>
+        <input type="radio" name="cooperation_condition" value="tfp" onchange="fetchAds()"> TFP
+    </label>
+    <label>
+        <input type="radio" name="cooperation_condition" value="commercial" onchange="fetchAds()"> Коммерция
+    </label>
+
+    <div id="ad-ads" style="margin-top: 20px;"></div>
+</div>
+
+<script>
+    function fetchAds() {
+        const selectedCondition = document.querySelector('input[name="cooperation_condition"]:checked').value;
+
+        fetch(`/api/ads/${selectedCondition}`)
+            .then(response => response.json())
+            .then(ads => {
+                displayAds(ads);
+            });
+    }
+
+
+    function displayAds(ads) {
+    const adContainer = document.getElementById('ad-ads');
+    adContainer.innerHTML = ''; // Очищаем предыдущие данные
+
+    if (ads.length === 0) {
+        adContainer.innerHTML = '<p>Объявления не найдены.</p>';
+        return;
+    }
+
+    ads.forEach(ad => {
+        const adPanel = document.createElement('div');
+        adPanel.className = 'ad-panel';
+        adPanel.innerHTML = `
+            <h3>${ad.subject}</h3>
+            <p>${ad.main_text}</p>
+            <p>Автор: ${ad.author_name}</p>
+            ${ad.cooperation_condition === 'commercial' ? `<p>Стоимость: ${ad.price}</p>` : ''}  <!-- Стоимость показываем только для коммерции -->
+            <div class="ad-images">
+                ${ad.photos.map(photo => `<img src="data:image/png;base64,${photo}" alt="Изображение объявления" class="ad-image">`).join('')}
+            </div>
+            <div class="contact-link-container">
+                <a href="${ad.link}" class="contact-link">Связаться по объявлению</a>
+            </div>
+        `;
+        adContainer.appendChild(adPanel);
+    });
+}
+
+
+</script>
+
+<!-- Контент для попадания в журнал -->
+<div id="journal-section" class="content-section">
+    <h2>Подача заявки</h2>
+    <div class="container">
+        <div class="reg_back" style="width: 80%; max-width: 500px; margin: 0 auto;">
+            <form id="journal-application-form">
+                <div class="form-group text-center">
+                    <label for="team-details">Введите данные о всех участниках вашей команды (например. Фотограф: Евгений Иванов и т.д.)</label>
+                    <input type="text" class="form-control" id="team-details" placeholder="Введите данные о команде" required>
+                </div>
+
+                <div class="form-group text-center">
+                    <label for="cloud-link">Ссылка на облако (Яндекс Диск) с фотографиями:</label>
+                    <input type="url" class="form-control" id="cloud-link" placeholder="Введите ссылку" required>
+                </div>
+
+                <div class="form-group text-center">
+                    <label for="social-link">Оставьте ссылку на соц.сеть для связи:</label>
+                    <input type="url" class="form-control" id="social-link" placeholder="Введите ссылку на соц-сеть">
+                </div>
+
+                <button type="submit" class="button_agree">Отправить заявку</button>
+
+                <p class="notice" style="margin-top: 15px;">
+                    Перед подачей следует ознакомиться с <a href="#" id="regulation-link" style="color: #eec111;">регламентом</a>.
+                </p>
+            </form>
         </div>
     </div>
-</body>
+</div>
+
+<!-- Модальное окно регламента -->
+<div id="regulation-modal" class="modal" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog" role="document" style="position: absolute; top: 50px; right: 0; z-index: 1000;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Требования к изображениям</h5>
+                <button type="button" class="close" onclick="closeRegulationModal()" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>1–5 изображений</li>
+                    <li>Формат JPG, PNG или TIF</li>
+                    <li>Цветовое пространство sRGB</li>
+                    <li>Допустимые размеры:</li>
+                    <ul>
+                        <li>Вертикальное изображение: 8,5 × 11 дюймов(2550 × 3300 пикселей)</li>
+                        <li>Горизонтальное изображение: 17 × 11 дюймов(5100 × 3300 пикселей)</li>
+                    </ul>
+                    <li>Только для владельцев авторских прав!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Открытие модального окна регламента
+    document.getElementById('regulation-link').onclick = function(event) {
+        event.preventDefault();
+        document.getElementById('regulation-modal').style.display = 'block';
+    };
+
+    // Закрытие модального окна
+    function closeRegulationModal() {
+        document.getElementById('regulation-modal').style.display = 'none';
+    }
+
+    // Отправка формы
+document.getElementById('journal-application-form').onsubmit = function(event) {
+    event.preventDefault(); // Отменяем стандартное поведение формы
+    const teamDetails = document.getElementById('team-details').value;
+    const cloudLink = document.getElementById('cloud-link').value;
+    const socialLink = document.getElementById('social-link').value;
+
+    // Логируем собранные данные
+    console.log('Team Details:', teamDetails);
+    console.log('Cloud Link:', cloudLink);
+    console.log('Social Link:', socialLink);
+
+    // Отправляем данные на сервер
+    fetch('/submit_journal_application', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        team_details: teamDetails,
+        cloud_link: cloudLink,
+        social_link: socialLink,
+    }),
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Сервер вернул ошибку: ' + response.statusText);
+    }
+    return response.json();
+})
+.then(data => {
+    alert('Заявка успешно отправлена!');
+    document.getElementById('journal-application-form').reset();
+})
+.catch(error => {
+    console.error('Ошибка:', error);
+    alert('Ошибка при отправке заявки: ' + error.message);
+});
+
+};
+
+</script>
+
 <footer>
-    <div class="footer">
-        <div class="footer_1">
-            На сайте вы можете найти предложения частных лиц и компаний России 
-            о покупке или продаже товаров и услуг, а так же подать объявление 
-            бесплатно. Контактные данные для Роскомнадзора и государственных органов: juristdoska@iportal.ru
-        </div>
-        <div class="footer_2">
-            Учредитель: Общество с ограниченной ответственностью «ИНТЕРНЕТ 
-            ТЕХНОЛОГИИ» Адрес редакции: 
-            630099, Россия, Новосибирск, ул. Ленина, д. 12, 6 этаж Электронный адрес редакции: 
-            doska_adv@iportal.ru Техподдержка: helpdoska@iportal.ru, 8 (800) 200-03-83
-        </div>
-    </div>
+    <p>&copy; 2025 Art Voir. Все права защищены.</p>
 </footer>
-</html>
+

@@ -1,30 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Страница авторизации</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            display: flex; /* Flexbox для всего body */
+            justify-content: center; /* Центрирование по горизонтали */
+            align-items: center; /* Центрирование по вертикали */
+            height: 100vh; /* Высота на весь экран */
+            margin: 0; /* Убираем отступы */
+            background-color: #070000; /* Цвет фона для контраста */
+        }
+    
+        .auth_back {
+            background: #333;
+            padding: 40px 30px; /* Чуть меньше отступы для компактности */
+            color: white;
+            border-radius: 10px; /* Скутгление углов */
+            height: 600px; /* Уменьшенная высота */
+            width: 500px; /* Уменьшенная ширина */
+            display: flex; /* Flexbox */
+            flex-direction: column; /* Ориентация по вертикали */
+            justify-content: space-between; /* Равномерное распределение */
+        }
+    
+        .auth {
+            display: flex; /* Flexbox для формы */
+            flex-direction: column; /* Ориентация по вертикали */
+            justify-content: center; /* Центрирование по вертикали */
+            flex-grow: 1; /* Заполнение оставшегося пространства */
+        }
+    
+        .button_agree {
+            width: 100%;
+            background: white; /* Цвет кнопки */
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+            color: black; /* Цвет текста на кнопке */
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .button_agree:hover {
+            background: grey; /* Цвет кнопки при наведении */
+        }
+
+        .exit_but {
+            color: whitesmoke;
+            text-decoration: none;
+            margin-top: 20px; /* Отступ сверху для ссылки "Назад" */
+        }
+
+        .exit_but:hover {
+            text-decoration: underline;
+        }
+    
+        .errors {
+            color: red;
+            margin: 10px 0; /* Отступ для ошибок */
+        }
+
+        h1 {
+            margin-bottom: 30px; /* Отступ снизу для заголовка */
+            text-align: center; /* Центрирование текста */
+        }
+
+    </style>
 </head>
 <body>
-    <div class="auth_back">
-        <h1>Страница авторизации</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="auth_back">
+                    <h1>Авторизация</h1>
     
-        <div class="auth">
-            <form method="POST" action="{{ url_for('login') }}">
-                <input class="text_log" type="text" name="username" placeholder="Логин">
-                <br>
-                <input class="text_pas" type="password" name="password" placeholder="Пароль">
-                <br>
-                <button type="submit" class="button_agree">Войти</button>
-            </form>
-        </div>
+                    <div class="auth">
+                        <form method="POST" action="{{ url_for('login') }}">
+                            <label for="username">Введите логин или никнейм</label>
+                            <input class="form-control" type="text" name="username" placeholder="Логин" required>
+                            <br>
+                            <label for="password">Введите пароль</label>
+                            <input class="form-control" type="password" name="password" placeholder="Пароль" required>
+                            <br>
+                            <button type="submit" class="button_agree">Войти</button>
+                        </form>
+                    </div>
 
-        <div class="errors">
-            {% for error in errors %}
-                {{ error }}
-            {% endfor %}
-        </div>
+                    <div class="errors">
+                        {% for error in errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
 
-        <a class="exit_but" href="{{ url_for('index') }}">На главную</a>
-    </div>
+                    <a class="exit_but" href="{{ url_for('home_page') }}">Выйти</a>
+                </div>
+            </div><!-- /.col-md-offset-3 col-md-6 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
 </body>
 </html>

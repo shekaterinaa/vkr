@@ -17,10 +17,13 @@
             <ul>
                 {% for advertisement in adv %}
                     <li>
-                        {{ advertisement.id }}
-                        {{ advertisement.subject }}
-                        {{ advertisement.main_text }}
-                        {{ advertisement.email }}
+                        {{ advertisements.id }}
+                        {{ advertisements.subject }}
+                        {{ advertisements.main_text }}
+                        {{ advertisements.link }}
+                        {{ advertisements.author_name}}
+                        {{ advertisements.cooperation_condition}}
+                        {{ advertisements.price}}
                     </li>
                 {% endfor %}
             </ul>

@@ -1,36 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Страница регистрации</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            display: flex; /* Flexbox для всего body */
+            justify-content: center; /* Центрирование по горизонтали */
+            align-items: center; /* Центрирование по вертикали */
+            height: 100vh; /* Высота на весь экран */
+            margin: 0; /* Убираем отступы */
+            background-color: #070000; /* Цвет фона для контраста */
+        }
+        
+        .reg_back {
+            background: #333; /* Изменили цвет фона формы */
+            padding: 40px 50px;
+            position: relative;
+            color: white;
+            border-radius: 10px; /* Добавим немного скругления */
+            display: flex; /* Flexbox для центрации содержимого */
+            flex-direction: column; /* Ориентация по вертикали */
+            align-items: center; /* Центрирование по горизонтали */
+        }
+
+        h1 {
+            margin-bottom: 30px; /* Отступ снизу для заголовка */
+            text-align: center; /* Центрирование текста */
+            color: white; /* Цвет заголовка */
+        }
+        
+        label {
+            margin-bottom: 10px;
+            display: block;
+            text-align: left; /* Выравнивание текста по левому краю */
+        }
+
+        .button_agree {
+            width: 100%;
+            background: white; /* Цвет кнопки */
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+            color: black; /* Цвет текста на кнопке */
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .button_agree:hover {
+            background: grey; /* Цвет кнопки при наведении */
+        }
+
+        .exit_but {
+            color: whitesmoke;
+            text-decoration: none;
+            margin-top: 20px; /* Отступ сверху для ссылки "Назад" */
+        }
+
+        .exit_but:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <div class="reg_back">
-        <form method="post">
-            <h1>Регистрация пользователя!</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="reg_back">
+                    <form method="post" enctype="multipart/form-data"> <!-- Добавлено enctype для загрузки файлов -->
+                        <h1>Регистрация</h1>
 
-            <input class="text_log" type="text" name="username" placeholder="Логин">
-            <br>
-            <input class="text_pas" type="password" name="password" placeholder="Пароль">
-            <br>
-            <input class="text_name" type="text" name="text_name" placeholder="Ваше имя">
-            <br>
-            <input class="avatar" type="text" name="avatar" placeholder="Ссылка на ваш аватар">
-            <br>
-            <input class="contact" type="text" name="contact" placeholder="Контактные данные">
-            <br>
-            <input class="about" type="text" name="about" placeholder="О себе">
-            <br>
-            <button type="submit" class="button_agree">Зарегистрироваться</button>
-        </form>
+                        <label for="username">Логин или никнейм:</label>
+                        <input class="form-control" id="username" type="text" name="username" required>
+                        <br>
 
-        <div class="errors">
-            {% for error in errors %}
-                {{ error }}
-            {% endfor %}
-        </div>
+                        <label for="password">Пароль:</label>
+                        <input class="form-control" id="password" type="password" name="password" required>
+                        <br>
 
-        <a class="exit_but" href="{{ url_for('index') }}">Назад</a>
-    </div>
+                        <label for="name">Ваше имя и фамилия:</label>
+                        <input class="form-control" id="name" type="text" name="name" required>
+                        <br>
+
+                        <label for="avatar">Загрузите фото для вашего профиля:</label>
+                        <input class="form-control" id="avatar" type="file" name="avatar" required>
+                        <br>
+
+                        <label for="contact">Телефон:</label>
+                        <input class="form-control" id="contact" type="text" name="contact">
+                        <br>
+
+                        <label for="about">Расскажите кратко о себе (например, опыт работы, жанры съемок, параметры):</label>
+                        <input class="form-control" id="about" type="text" name="about">
+                        <br>
+
+                        <label for="social">Ссылка на соц. сети (где с вами можно связаться Telegram, Vk):</label>
+                        <input class="form-control" id="social" type="text" name="social">
+                        <br>
+
+                        <label for="specialization">Выберите специализацию. Если вы являетесь заказчиком, оставьте "Не выбрано":</label>
+                        <select id="specialization" name="specialization" class="form-control">
+                            <option value="">Не выбрано</option> <!-- Добавлено значение по умолчанию -->
+                            <option value="model">Модель</option>
+                            <option value="photographer">Фотограф</option>
+                            <option value="makeup-artist">Визажист</option>
+                            <option value="designer">Дизайнер</option>
+                            <option value="videographer">Видеограф</option>
+                        </select>
+                        <br>
+
+                        <button type="submit" class="button_agree">Зарегистрироваться</button>
+                    </form>
+
+                    <div class="errors">
+                        {% for error in errors %}
+                            <p style="color: red;">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <a class="exit_but" href="{{ url_for('home_page') }}">Назад</a>
+                </div>
+            </div><!-- /.col-md-offset-3 col-md-6 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
 </body>
 </html>
+
+

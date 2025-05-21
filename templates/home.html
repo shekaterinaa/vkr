@@ -5,21 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <title>Art Voir</title>
+    <style>
+    /* Специальный отступ только для первой картинки */
+        .gallery .photo-container:first-child {
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="logo">ART Voir</div>
+        <div class="logo">ART Voire</div>
         <div class="nav">
             <a href="/login">Войти</a>
             <a href="/register">Зарегистрироваться</a>
         </div>
     </header>
     <main>
-        <button id="latest-publications-button">Последние публикации</button>
-        <div id="gallery" class="hidden"></div>
-        <button id="mission-button">Миссия</button>
-        <div id="mission" class="hidden">
-            <p>Миссия нашего журнала - вдохновлять и объединять творческих людей.</p>
+        <div id="animated-text" class="animated-text"></div> <!-- Добавленный элемент -->
+        <div class="button-container">
+        <a href="#" id="latest-publications-button" class="link-button">Последние публикации</a>
+        <a href="#" id="mission-button" class="link-button">Миссия</a>
+    </div>
+        <div id="gallery" class="hidden gallery"></div>
+        <div id="mission" class="hidden mission-container">
+            <div class="mission-content">
+                <h2 class="mission-title">Наша миссия</h2>
+                <div class="mission-text">
+                    <p class="mission-paragraph"><span class="highlight">Мы рады приветствовать вас</span> на платформе журнала "Art Voire", где искусство встречается с вдохновением, а креативность не знает границ.</p>
+                    <p class="mission-paragraph">Миссия нашей платформы - <span class="highlight">вдохновлять и объединять</span> творческих людей.</p>
+                    <p class="mission-paragraph">Мы стремимся создавать пространство для обмена идеями, новыми концепциями, опытом и проектами</p>
+                    <p class="mission-paragraph">Если вы только начинаете свой путь в творчестве или хотите поделиться своими идеями, <span class="highlight">это место для вас!</span></p>
+                    <p class="mission-paragraph">Не бойтесь экспериментировать и выражать себя — каждый профессионал когда-то был новичком.</p>
+                    <p class="mission-paragraph"><span class="highlight">Находите интересные сотрудничества и проекты </span></p>
+                    <p class="mission-paragraph">Присоединяйтесь и регистрируйтесь на нашей платформе, публикуйте свои работы и предложения по сотрудничеству, вместе мы сможем создать что-то поистине удивительное!</p>
+                    <div class="register-container">
+                        <a href="/register" class="register-button">Присоединиться</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <footer>
@@ -27,16 +50,145 @@
     </footer>
 
     <script>
-        document.getElementById('latest-publications-button').onclick = function() {
-            var gallery = document.getElementById('gallery');
-            gallery.classList.toggle('hidden');
-            // Здесь вы можете добавить код для отображения изображений
-        };
-
-        document.getElementById('mission-button').onclick = function() {
-            var mission = document.getElementById('mission');
-            mission.classList.toggle('hidden');
-        };
+        // Анимация текста
+        const text = "Art Voire — творчество объединяет";
+        let i = 0;
+        
+        function animateText() {
+            document.getElementById('animated-text').textContent = text.substring(0, i);
+            i++;
+            if (i > text.length) {
+                setTimeout(() => {
+                    i = 0;
+                    setTimeout(animateText, 1000); // Пауза перед повторением
+                }, 2000); // Пауза после завершения
+            } else {
+                setTimeout(animateText, 100); // Скорость печати
+            }
+        }
+        
+        // Запускаем анимацию при загрузке страницы
+        window.onload = animateText;
     </script>
+
+    <script>
+    document.getElementById('latest-publications-button').onclick = function(event) {
+        event.preventDefault();
+        var gallery = document.getElementById('gallery');
+        var animatedText = document.getElementById('animated-text');
+        
+        if (gallery.classList.contains('hidden')) {
+            // Скрываем анимированный текст
+            animatedText.style.opacity = '0';
+        
+        // Показываем галерею
+            gallery.innerHTML = '';
+                
+                // Массив с данными для изображений и подписей
+                const photos = [
+                    {
+                        src: "static/ка1.jpg", 
+                        alt: "Картинка 1",
+                        md: "Виктория Васильева",
+                        ph: "Юлия Прозорова"
+                    },
+                    {
+                        src: "static/ка2.jpg", 
+                        alt: "Картинка 2",
+                        md: "Арина Кораблева",
+                        ph: "Юлия Прозорова"
+                    },
+                    {
+                        src: "static/ка3.jpg", 
+                        alt: "Картинка 3",
+                        md: "Анастасия Баслак",
+                        ph: "Ольга Рочева"
+                    },
+                    {
+                        src: "static/ка4.jpg", 
+                        alt: "Картинка 4",
+                        md: "Семён Дмитриев",
+                        ph: "Наталья Бурнашова"
+                    },
+                    {
+                        src: "static/ка5.jpg", 
+                        alt: "Картинка 5",
+                        md: "Полина Карнакова",
+                        ph: "Александр Старикович"
+                    }
+                ];
+                
+                // Добавляем фотографии с подписями в галерею
+                photos.forEach(photoData => {
+                    const photoContainer = document.createElement('div');
+                    photoContainer.className = 'photo-container';
+                    
+                    const img = document.createElement('img');
+                    img.src = photoData.src;
+                    img.alt = photoData.alt;
+                    img.width = 350;
+                    
+                    const caption = document.createElement('div');
+                    caption.className = 'photo-caption';
+                    caption.innerHTML = `
+                        <div><strong>Md:</strong> ${photoData.md}</div>
+                        <div><strong>Ph:</strong> ${photoData.ph}</div>
+                    `;
+                    
+                    photoContainer.appendChild(img);
+                    photoContainer.appendChild(caption);
+                    gallery.appendChild(photoContainer);
+                });
+                
+                gallery.classList.remove('hidden');
+                
+                // Плавное появление изображений
+        const galleryImages = gallery.querySelectorAll('img');
+        galleryImages.forEach((img, index) => {
+            setTimeout(() => {
+                img.classList.add('visible');
+            }, index * 300);
+        });
+    } else {
+        // Скрываем галерею
+        const galleryImages = gallery.querySelectorAll('img');
+        galleryImages.forEach(img => {
+            img.classList.remove('visible');
+        });
+        
+        setTimeout(() => {
+            gallery.classList.add('hidden');
+            // Показываем анимированный текст обратно
+            animatedText.style.opacity = '1';
+        }, 500);
+    }
+};
+
+document.getElementById('mission-button').onclick = function(event) {
+    event.preventDefault();
+    var mission = document.getElementById('mission');
+    var animatedText = document.getElementById('animated-text');
+    
+    if (mission.classList.contains('hidden')) {
+        // Скрываем анимированный текст
+        animatedText.style.opacity = '0';
+        // Показываем миссию
+        mission.classList.remove('hidden');
+        setTimeout(() => {
+            mission.style.opacity = '1';
+        }, 10);
+    } else {
+        // Скрываем миссию
+        mission.style.opacity = '0';
+        setTimeout(() => {
+            mission.classList.add('hidden');
+            // Показываем анимированный текст обратно
+            animatedText.style.opacity = '1';
+        }, 500);
+    }
+};
+    </script>        
 </body>
 </html>
+
+
